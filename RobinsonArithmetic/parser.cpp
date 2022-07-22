@@ -18,9 +18,8 @@ bool Parser::P(size_t a, size_t b) {
 	// Q=Q | Q
 	for (int i = a; i < b; ++i) {
 		if (lexer.get_type_at(i) == EQ) {
-			return (
-				Q(a, i) && Q(i + 1, b)
-				);
+			if (Q(a, i) && Q(i + 1, b))
+				return true;
 		}
 	}
 	return Q(a, b);
@@ -30,9 +29,8 @@ bool Parser::Q(size_t a, size_t b) {
 	// Q+R | R
 	for (int i = a; i < b; ++i) {
 		if (lexer.get_type_at(i) == PLUS) {
-			return (
-				Q(a, i) && R(i+1, b)
-				);
+			if (Q(a, i) && R(i + 1, b))
+				return true;
 		}
 	}
 	return R(a, b);
@@ -42,9 +40,8 @@ bool Parser::R(size_t a, size_t b) {
 	// RxF | F
 	for (int i = a; i < b; ++i) {
 		if (lexer.get_type_at(i) == MULT) {
-			return (
-				R(a, i) && F(i+1, b)
-				);
+			if (R(a, i) && F(i + 1, b))
+				return true;
 		}
 	}
 	return F(a, b);
