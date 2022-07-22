@@ -29,7 +29,7 @@ int main(void) {
 
 		cout << "parsing..." << endl << endl;
 		Parser parser(lexer);
-		cout << parser.parse() << endl;
+		cout << "parse succeeded: " << parser.parse() << endl;
 	}
 	catch (exception& e) {
 		cerr << e.what() << endl;

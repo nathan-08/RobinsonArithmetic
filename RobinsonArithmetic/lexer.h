@@ -29,6 +29,7 @@ public:
 	size_t inline num_tokens() const { return tokens.size(); };
 	Type get_type_at(size_t) const;
 	u8 get_value_at(size_t) const;
+	const Token& get_token_at(size_t) const;
 
 
 friend std::ostream& operator<<(std::ostream& os, Lexer& lexer) {

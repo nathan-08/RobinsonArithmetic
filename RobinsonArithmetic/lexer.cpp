@@ -22,7 +22,7 @@ Lexer::Lexer(const vector<char>& input) {
 		case '0':
 			tokens.emplace_back(new Number(NUM, 0));
 			break;
-		case 'S':
+		case 's':
 		{
 			u8 n = 1;
 			char next;
@@ -31,7 +31,7 @@ Lexer::Lexer(const vector<char>& input) {
 				if (i >= input.size())
 					throw logic_error("Lexer error");
 				next = input.at(i);
-				if (next == 'S') {
+				if (next == 's') {
 					++n;
 					continue;
 				}
@@ -65,4 +65,8 @@ u8 Lexer::get_value_at(size_t i) const {
 		return number->value;
 	}
 	throw logic_error("Not a number");
+}
+
+const Token& Lexer::get_token_at(size_t i) const {
+	return *tokens.at(i);
 }

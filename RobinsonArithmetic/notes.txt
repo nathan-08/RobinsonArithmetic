@@ -11,7 +11,7 @@ context-free grammar
 P => Q=Q | Q
 Q => Q+R | R
 R => RxF | F
-F => num | (P)
+F => num | (Q)
 
 todo:
 <> implement S as a separate type from num
