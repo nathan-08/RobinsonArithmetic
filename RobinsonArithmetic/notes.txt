@@ -1,0 +1,14 @@
+﻿todo:
+implement S as a separate type from int
+
+symbols
+int, +, x, =
+
+context-free grammar
+
+P => Q=Q | Q
+Q => Q+R | R
+R => RxF | F
+F => num | (P)
+
+1+1=2
