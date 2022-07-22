@@ -17,3 +17,4 @@ todo:
 <> implement "s" as a separate type from num
 (currently the lexer condenses applications of "s" into a single number token)
 <> augment grammar to include logical operators
+<> implement robinson arithmetic axioms to evaluate equations
