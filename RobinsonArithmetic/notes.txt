@@ -1,8 +1,10 @@
-﻿todo:
-implement S as a separate type from int
-
-symbols
-int, +, x, =
+﻿alphabet:
+	num, +, x, =
+note:
+	num is a type which the lexer creates from
+	the following rules:
+	E => SE | 0
+	(where S is the successor function)
 
 context-free grammar
 
@@ -11,4 +13,7 @@ Q => Q+R | R
 R => RxF | F
 F => num | (P)
 
-1+1=2
+todo:
+<> implement S as a separate type from num
+(currently the lexer condenses applications of S into a single number token)
+<> augment grammar to include logical operators
