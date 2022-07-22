@@ -1,12 +1,12 @@
 ﻿alphabet:
-	num, +, x, =
+	s, 0, +, x, =, (, )
 note:
-	num is a type which the lexer creates from
+	num is a terminal type which the lexer creates from
 	the following rules:
-	E => SE | 0
-	(where S is the successor function)
+	E => sE | 0
+	(s is the successor function)
 
-context-free grammar
+The parser is an implementation of this context-free grammar
 
 P => Q=Q | Q
 Q => Q+R | R
@@ -14,6 +14,6 @@ R => RxF | F
 F => num | (Q)
 
 todo:
-<> implement S as a separate type from num
-(currently the lexer condenses applications of S into a single number token)
+<> implement "s" as a separate type from num
+(currently the lexer condenses applications of "s" into a single number token)
 <> augment grammar to include logical operators
