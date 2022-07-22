@@ -4,16 +4,7 @@ using namespace std;
 
 Parser::Parser(const Lexer& lexer)
 	: lexer(lexer)
-{
-	/*
-	size_t i = 0;
-	size_t size = lexer.num_tokens();
-	Type t = lexer.get_type_at(i);
-	u8 value = lexer.get_value_at(i);
-	*/
-	end = lexer.num_tokens();
-	lookahead = lexer.get_type_at(pos++);
-}
+{ }
 
 bool Parser::parse() {
 	return P(0, lexer.num_tokens());

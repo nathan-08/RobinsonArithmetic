@@ -2,10 +2,6 @@
 #include "lexer.h"
 
 class Parser {
-	size_t pos = 0;
-	size_t begin = 0;
-	size_t end;
-	Type lookahead;
 	const Lexer& lexer;
 public:
 	Parser(const Lexer&);
