@@ -25,11 +25,11 @@ int main(void) {
 	try {
 		cout << "lexing..." << endl << endl;
 		Lexer lexer(source);
-		cout << lexer << endl << endl;
+		cout << lexer << endl;
 
-		//cout << "parsing..." << endl << endl;
-		//Parser parser(lexer);
-		//cout << "parse succeeded: " << parser.parse() << endl;
+		cout << "parsing..." << endl << endl;
+		Parser parser(lexer);
+		cout << "parse succeeded: " << parser.parse() << endl;
 	}
 	catch (exception& e) {
 		cerr << e.what() << endl;

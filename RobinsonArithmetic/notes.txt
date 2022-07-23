@@ -16,7 +16,7 @@ A => A<=>B | B
 B => B =>C | C
 C => C & D | D
 D => D | E | E
-E => !E    | (A) | P
+E => !E | (A) | Q=Q
 
 < arithmetic stuff >
 P => Q=Q | Q
@@ -27,5 +27,4 @@ F => num | (Q)
 todo:
 <> implement "s" as a separate type from num
 (currently the lexer condenses applications of "s" into a single number token)
-<> augment grammar to include logical operators
 <> implement robinson arithmetic axioms to evaluate equations

@@ -3,6 +3,12 @@
 #include <iostream>
 
 enum NodeType {
+	NODE_NEG,
+	NODE_IMPL,
+	NODE_IFF,
+	NODE_AND,
+	NODE_OR,
+
 	NODE_EQ,
 	NODE_PLUS,
 	NODE_MULT,
@@ -28,6 +34,12 @@ public:
 	~Parser();
 	bool parse();
 	bool match(Type, size_t);
+	Node* A(size_t, size_t);
+	Node* B(size_t, size_t);
+	Node* C(size_t, size_t);
+	Node* D(size_t, size_t);
+	Node* E(size_t, size_t);
+
 	Node* P(size_t, size_t);
 	Node* Q(size_t, size_t);
 	Node* R(size_t, size_t);

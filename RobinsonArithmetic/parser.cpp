@@ -32,14 +32,17 @@ void Parser::delete_tree(Node* tree) {
 }
 
 void Parser::traverse(Node* tree) {
-	// Postfix rendering of tree
+	if (tree->type != NODE_NUM)
+		cout << "(";
 	if (tree->left) traverse(tree->left);
+	cout <<  *tree;
 	if (tree->right) traverse(tree->right);
-	cout << *tree;
+	if (tree->type != NODE_NUM)
+		cout << ")";
 }
 
 bool Parser::parse() {
-	tree = P(0, lexer.num_tokens());
+	tree = A(0, lexer.num_tokens());
 	if (tree) {
 		cout << endl;
 		traverse(tree);
@@ -50,6 +53,108 @@ bool Parser::parse() {
 
 bool Parser::match(Type type, size_t pos) {
 	return lexer.get_type_at(pos) == type;
+}
+
+Node* Parser::A(size_t a, size_t b) {
+	// A => A<=>B | B
+	for (int i = a; i < b; ++i) {
+		if (lexer.get_type_at(i) == IFF) {
+			Node* left = A(a, i);
+			Node* right = B(i+1, b);
+			if (left && right) {
+				return new Node(NODE_IFF, left, right);
+			}
+			else {
+				if (left) delete left;
+				if (right) delete right;
+			}
+		}
+	}
+	return B(a, b);
+}
+
+Node* Parser::B(size_t a, size_t b) {
+	// B => B=>C | C
+	for (int i = a; i < b; ++i) {
+		if (lexer.get_type_at(i) == IMPL) {
+			Node* left = B(a, i);
+			Node* right = C(i+1, b);
+			if (left && right) {
+				return new Node(NODE_IMPL, left, right);
+			}
+			else {
+				if (left) delete left;
+				if (right) delete right;
+			}
+		}
+	}
+	return C(a, b);
+}
+
+Node* Parser::C(size_t a, size_t b) {
+	// C => C & D | D
+	for (int i = a; i < b; ++i) {
+		if (lexer.get_type_at(i) == AND) {
+			Node* left = C(a, i);
+			Node* right = D(i+1, b);
+			if (left && right) {
+				return new Node(NODE_AND, left, right);
+			}
+			else {
+				if (left) delete left;
+				if (right) delete right;
+			}
+		}
+	}
+	return D(a, b);
+}
+
+Node* Parser::D(size_t a, size_t b) {
+	// D => D <or> E | E
+	for (int i = a; i < b; ++i) {
+		if (lexer.get_type_at(i) == OR) {
+			Node* left = D(a, i);
+			Node* right = E(i+1, b);
+			if (left && right) {
+				return new Node(NODE_OR, left, right);
+			}
+			else {
+				if (left) delete left;
+				if (right) delete right;
+			}
+		}
+	}
+	return E(a, b);
+}
+
+Node* Parser::E(size_t a, size_t b) {
+	// E => !E | (A) | Q=Q
+	if (lexer.get_type_at(a) == NEG) {
+		Node* negated_proposition = E(a + 1, b);
+		if (negated_proposition) {
+			return new Node(NODE_NEG, nullptr, negated_proposition);
+		}
+	}
+	// (A)
+	if (match(LPAREN, a) && match(RPAREN, b - 1)) {
+		Node* p = A(a + 1, b - 1);
+		if (p) return p;
+	}
+	// Q=Q
+	for (int i = a; i < b; ++i) {
+		if (lexer.get_type_at(i) == EQ) {
+			Node* left = Q(a, i);
+			Node* right = Q(i + 1, b);
+			if (left && right) {
+				return new Node(NODE_EQ, left, right);
+			}
+			else {
+				if (left) delete left;
+				if (right) delete right;
+			}
+		}
+	}
+	return nullptr;
 }
 
 Node* Parser::P(size_t a, size_t b) {
@@ -124,6 +229,22 @@ Node* Parser::F(size_t a, size_t b) {
 
 ostream& operator<<(ostream& os, Node& node) {
 	switch (node.type) {
+	case NODE_NEG:
+		os << "!";
+		break;
+	case NODE_IMPL:
+		os << "=>";
+		break;
+	case NODE_IFF:
+		os << "<=>";
+		break;
+	case NODE_AND:
+		os << "&";
+		break;
+	case NODE_OR:
+		os << "|";
+		break;
+
 	case NODE_EQ:
 		os << "=";
 		break;
@@ -134,7 +255,7 @@ ostream& operator<<(ostream& os, Node& node) {
 		os << "x";
 		break;
 	case NODE_NUM:
-		os << "(" << static_cast<int>(node.value) << ")";
+		os << static_cast<int>(node.value);
 		break;
 	default:
 		os << "<UNKNOWN>";
