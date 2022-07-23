@@ -5,12 +5,20 @@
 #include <iostream>
 using u8 = uint8_t;
 enum Type {
+	NEG,
+	IMPL,
+	IFF,
+	AND,
+	OR,
+
 	NUM,
 	PLUS,
 	MULT,
 	EQ,
 	LPAREN,
-	RPAREN
+	RPAREN,
+
+	UNKNOWN
 };
 struct Token {
 	const Type type;
@@ -31,35 +39,6 @@ public:
 	u8 get_value_at(size_t) const;
 	const Token& get_token_at(size_t) const;
 
-
-friend std::ostream& operator<<(std::ostream& os, Lexer& lexer) {
-	for (std::unique_ptr<Token>& token : lexer.tokens) {
-		switch (token->type) {
-		case (RPAREN):
-			os << "<RPAREN>";
-			break;
-		case (LPAREN):
-			os << "<LPAREN>";
-			break;
-		case (PLUS):
-			os << "<PLUS>";
-			break;
-		case (MULT):
-			os << "<MULT>";
-			break;
-		case (EQ):
-			os << "<EQ>";
-			break;
-		case (NUM):
-		{
-			Number* n = static_cast<Number*>(token.get());
-			os << "<NUM_" << (int)n->value << ">";
-			break;
-		}
-		default:
-			os << "<UNKNOWN>";
-		}
-	}
-	return os;
-}
+	friend std::ostream& operator<<(std::ostream&, Lexer&);
 };
+

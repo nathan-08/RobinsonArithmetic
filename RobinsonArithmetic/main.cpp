@@ -27,9 +27,9 @@ int main(void) {
 		Lexer lexer(source);
 		cout << lexer << endl << endl;
 
-		cout << "parsing..." << endl << endl;
-		Parser parser(lexer);
-		cout << "parse succeeded: " << parser.parse() << endl;
+		//cout << "parsing..." << endl << endl;
+		//Parser parser(lexer);
+		//cout << "parse succeeded: " << parser.parse() << endl;
 	}
 	catch (exception& e) {
 		cerr << e.what() << endl;

@@ -1,5 +1,6 @@
 ﻿alphabet:
-	s, 0, +, x, =, (, )
+	s, 0, +, x, =, (, ), 
+	!, =>, <=>, &, |
 note:
 	num is a terminal type which the lexer creates from
 	the following rules:
@@ -8,6 +9,16 @@ note:
 
 The parser is an implementation of this context-free grammar
 
+a => (!b => c) <=> d
+
+< logical stuff >
+A => A<=>B | B
+B => B =>C | C
+C => C & D | D
+D => D | E | E
+E => !E    | (A) | P
+
+< arithmetic stuff >
 P => Q=Q | Q
 Q => Q+R | R
 R => RxF | F

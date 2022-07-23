@@ -121,3 +121,23 @@ Node* Parser::F(size_t a, size_t b) {
 	}
 	return nullptr;
 }
+
+ostream& operator<<(ostream& os, Node& node) {
+	switch (node.type) {
+	case NODE_EQ:
+		os << "=";
+		break;
+	case NODE_PLUS:
+		os << "+";
+		break;
+	case NODE_MULT:
+		os << "x";
+		break;
+	case NODE_NUM:
+		os << "(" << static_cast<int>(node.value) << ")";
+		break;
+	default:
+		os << "<UNKNOWN>";
+	}
+	return os;
+}

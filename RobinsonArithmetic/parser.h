@@ -16,25 +16,7 @@ struct Node {
 	Node(NodeType, u8);
 	Node(NodeType, Node*, Node*);
 	~Node();
-	friend std::ostream& operator<<(std::ostream& os, Node& node) {
-		switch (node.type) {
-		case NODE_EQ:
-			os << "=";
-			break;
-		case NODE_PLUS:
-			os << "+";
-			break;
-		case NODE_MULT:
-			os << "x";
-			break;
-		case NODE_NUM:
-			os << "(" << static_cast<int>(node.value) << ")";
-			break;
-		default:
-			os << "<UNKNOWN>";
-		}
-		return os;
-	}
+	friend std::ostream& operator<<(std::ostream&, Node&);
 };
 
 class Parser {
