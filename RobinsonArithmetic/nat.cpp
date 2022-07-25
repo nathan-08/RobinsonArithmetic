@@ -46,7 +46,7 @@ Nat* Nat::sum(Nat const* a, Nat const* b) {
 Nat* Nat::mul(Nat const* a, Nat const* b) {
 	Nat* c = new Zero();
 	while (!is_zero(a)) {
-		a = dynamic_cast<Suc const*>(a)->inner;
+		a = a->dec();
 		// add b to c
 		Nat const* bb = b;
 		while (!is_zero(bb)) {
