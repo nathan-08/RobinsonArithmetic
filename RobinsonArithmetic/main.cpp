@@ -4,6 +4,8 @@
 #include <cctype>
 #include "lexer.h"
 #include "parser.h"
+#include "interpreter.h"
+#include "nat.h"
 using namespace std;
 
 const string filename = "source.dat";
@@ -23,13 +25,24 @@ int main(void) {
 	file.close();
 
 	try {
-		cout << "lexing..." << endl << endl;
+		cout << "lexing..." << endl;
+		for (char c : source) cout << c;
+		cout << endl;
+
 		Lexer lexer(source);
 		cout << lexer << endl;
 
-		cout << "parsing..." << endl << endl;
+		cout << "parsing..." << endl;
 		Parser parser(lexer);
-		cout << "parse succeeded: " << parser.parse() << endl;
+		Node* tree = parser.parse();
+		cout << endl;
+		cout << "parse succeeded: " << (tree!=nullptr) << endl;
+
+		if (tree) {
+			Interpreter bob(tree);
+			delete tree;
+		}
+		
 	}
 	catch (exception& e) {
 		cerr << e.what() << endl;

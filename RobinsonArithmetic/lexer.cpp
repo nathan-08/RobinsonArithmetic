@@ -45,31 +45,11 @@ Lexer::Lexer(const vector<char>& input) {
 			tokens.emplace_back(new Token(RPAREN));
 			break;
 		case '0':
-			tokens.emplace_back(new Number(NUM, 0));
+			tokens.emplace_back(new Token(ZERO));
 			break;
 		case 's':
-		{
-			u8 n = 1;
-			char next;
-			while (true) {
-				i++;
-				if (i >= input.size())
-					throw logic_error("Lexer error");
-				next = input.at(i);
-				if (next == 's') {
-					++n;
-					continue;
-				}
-				else if (next == '0') {
-					tokens.emplace_back(new Number(NUM, n));
-					break;
-				}
-				else {
-					throw logic_error("Lexer error");
-				}
-
-			}
-		}
+			tokens.emplace_back(new Token(S));
+			break;
 		break;
 		case '+':
 			tokens.emplace_back(new Token(PLUS));
@@ -133,12 +113,12 @@ ostream& operator<<(ostream& os, Lexer& lexer) {
 		case (EQ):
 			os << "<EQ>";
 			break;
-		case (NUM):
-		{
-			Number* n = static_cast<Number*>(token.get());
-			os << "<NUM_" << (int)n->value << ">";
+		case (S):
+			os << "<S>";
 			break;
-		}
+		case (ZERO):
+			os << "<ZERO>";
+			break;
 		case (UNKNOWN):
 			os << "<UNKNOWN>";
 			break;

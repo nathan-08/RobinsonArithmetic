@@ -2,53 +2,30 @@
 #include "parser.h"
 using namespace std;
 
-Node::Node(NodeType type, u8 value)
-	: type(type), left(nullptr), right(nullptr), value(value) {}
-
-Node::Node(NodeType type, Node* left, Node* right)
-	: type(type), left(left), right(right)
-{ }
-
-Node::~Node() {
-	//cout << "deleting " << *this << endl;
-}
 
 Parser::Parser(const Lexer& lexer)
 	: lexer(lexer)
 { }
 
-Parser::~Parser() {
-	if (tree) {
-		delete_tree(tree);
-	}
-}
-
-void Parser::delete_tree(Node* tree) {
-	if (tree) {
-		delete_tree(tree->left);
-		delete_tree(tree->right);
-		delete tree;
-	}
-}
-
 void Parser::traverse(Node* tree) {
-	if (tree->type != NODE_NUM)
+	if (tree->type != NODE_ZERO && tree->type != NODE_S)
 		cout << "(";
 	if (tree->left) traverse(tree->left);
 	cout <<  *tree;
 	if (tree->right) traverse(tree->right);
-	if (tree->type != NODE_NUM)
+	if (tree->type != NODE_ZERO && tree->type != NODE_S)
 		cout << ")";
 }
 
-bool Parser::parse() {
-	tree = A(0, lexer.num_tokens());
-	if (tree) {
-		cout << endl;
-		traverse(tree);
-		cout << endl;
+Node* Parser::parse() {
+	Node* tree = A(0, lexer.num_tokens());
+	if (!tree) {
+		tree = P(0, lexer.num_tokens());
 	}
-	return tree != nullptr;
+	if (tree) {
+		traverse(tree);
+	}
+	return tree;
 }
 
 bool Parser::match(Type type, size_t pos) {
@@ -212,53 +189,20 @@ Node* Parser::R(size_t a, size_t b) {
 }
 
 Node* Parser::F(size_t a, size_t b) {
-	// num | (P)
-	if (a + 1 == b) {
-		if (match(NUM, a)) {
-			return new Node(NODE_NUM, lexer.get_value_at(a));
+	// sF | 0 | (Q)
+	if (a + 1 == b && match(ZERO, a)) {
+		return new Node(NODE_ZERO, nullptr, nullptr);
+	}
+	if (match(S, a)) {
+		Node* f = F(a + 1, b);
+		if (f) {
+			return new Node(NODE_S, nullptr, f);
 		}
 	}
-	else {
-		if (match(LPAREN, a) && match(RPAREN, b - 1)) {
-			Node* q = Q(a+1, b - 1);
-			if (q) return q;
-		}
+	if (match(LPAREN, a) && match(RPAREN, b - 1)) {
+		Node* q = Q(a+1, b - 1);
+		if (q) return q;
 	}
 	return nullptr;
 }
 
-ostream& operator<<(ostream& os, Node& node) {
-	switch (node.type) {
-	case NODE_NEG:
-		os << "!";
-		break;
-	case NODE_IMPL:
-		os << "=>";
-		break;
-	case NODE_IFF:
-		os << "<=>";
-		break;
-	case NODE_AND:
-		os << "&";
-		break;
-	case NODE_OR:
-		os << "|";
-		break;
-
-	case NODE_EQ:
-		os << "=";
-		break;
-	case NODE_PLUS:
-		os << "+";
-		break;
-	case NODE_MULT:
-		os << "x";
-		break;
-	case NODE_NUM:
-		os << static_cast<int>(node.value);
-		break;
-	default:
-		os << "<UNKNOWN>";
-	}
-	return os;
-}

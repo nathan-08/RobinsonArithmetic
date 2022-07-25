@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 #include <iostream>
-using u8 = uint8_t;
+#include "types.h"
 enum Type {
 	NEG,
 	IMPL,
@@ -11,7 +11,8 @@ enum Type {
 	AND,
 	OR,
 
-	NUM,
+	ZERO,
+	S,
 	PLUS,
 	MULT,
 	EQ,

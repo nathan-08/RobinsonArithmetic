@@ -22,7 +22,7 @@ E => !E | (A) | Q=Q
 P => Q=Q | Q
 Q => Q+R | R
 R => RxF | F
-F => num | (Q)
+F => sF | 0 | (Q)
 
 todo:
 <> implement "s" as a separate type from num
