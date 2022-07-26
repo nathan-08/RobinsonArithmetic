@@ -25,6 +25,8 @@ R => RxF | F
 F => sF | 0 | (Q)
 
 todo:
-<> implement "s" as a separate type from num
+< > Make Interpreter::visit function templated, rather than 
+using a switch statement in it.
+<x> implement "s" as a separate type from num
 (currently the lexer condenses applications of "s" into a single number token)
-<> implement robinson arithmetic axioms to evaluate equations
+<x> implement robinson arithmetic axioms to evaluate equations

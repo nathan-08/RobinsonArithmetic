@@ -30,9 +30,8 @@ Value* Interpreter::visit(Node* n) {
 		result = new Zero();
 		break;
 	case NODE_S:
-		// HERE IS THE ISSUE (builds new nat out of 
-		// previous nodes)
 		result = new Suc(dynamic_cast<Nat*>(right)->copy());
+		// must copy here, or don't delete right.
 		break;
 	case NODE_PLUS:
 		result = Nat::sum(
