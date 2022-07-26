@@ -3,6 +3,9 @@
 #include <utility>
 using namespace std;
 
+// Bool //
+Bool::Bool(bool value): value(value) {}
+
 // *** Zero *** //
 Nat const* Zero::dec() const {
 	return this;
@@ -55,6 +58,14 @@ Nat* Nat::mul(Nat const* a, Nat const* b) {
 		}
 	}
 	return c;
+}
+
+bool Nat::eq(Nat const* a, Nat const* b) {
+	if (is_zero(a)) {
+		return is_zero(b);
+	}
+	else if (is_zero(b)) return false;
+	else return eq(a->dec(), b->dec());
 }
 
 Nat* Nat::from_int(u8 i) {

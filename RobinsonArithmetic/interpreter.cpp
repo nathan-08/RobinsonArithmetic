@@ -9,7 +9,13 @@ Interpreter::Interpreter(Node* n) {
 		cout << "evaluation: " << Nat::to_int(num) << endl;
 	}
 	else {
-		cout << "not a number" << endl;
+		Bool* b = dynamic_cast<Bool*>(v);
+		if (!b) {
+			cout << "cast failed" << endl;
+		}
+		else {
+			cout << "evaluation (bool): " << b->value << endl;
+		}
 	}
 	delete v;
 }
@@ -38,6 +44,15 @@ Value* Interpreter::visit(Node* n) {
 			dynamic_cast<Nat*>(left),
 			dynamic_cast<Nat*>(right));
 		break;
+	case NODE_EQ:
+	{
+		bool bool_result = Nat::eq(
+			dynamic_cast<Nat*>(left),
+			dynamic_cast<Nat*>(right));
+		delete left;
+		delete right;
+		return new Bool(bool_result);
+	}
 	default:
 		cout << "~didn't plan for this" << endl;
 	}

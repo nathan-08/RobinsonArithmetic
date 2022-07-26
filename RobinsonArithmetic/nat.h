@@ -8,6 +8,7 @@ struct Value {
 
 struct Bool : public Value {
 	bool value;
+	Bool(bool);
 };
 
 struct Nat : public Value {
@@ -18,6 +19,7 @@ struct Nat : public Value {
 	static bool is_zero(Nat const*);
 	static Nat* sum(Nat const*, Nat const*);
 	static Nat* mul(Nat const*, Nat const*);
+	static bool eq(Nat const*, Nat const*);
 	static Nat* from_int(u8);
 	static u16 to_int(Nat const*);
 };
